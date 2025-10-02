@@ -7,9 +7,18 @@ on:
         required: false
         default: dist
         type: string
+    outputs:
+      result:
+        description: result
+        value: ${{ jobs.deploy.outputs.outcome }}
+    #secrets:
+     # some-secret:
+      #  required: false
 
 jobs:
   deploy:
+    outputs: 
+      outcome: ${{ steps.set-result.outputs.step-result }}
     runs-on: ubuntu--latest
     steps:
     - name: get code
@@ -20,3 +29,5 @@ jobs:
       run: ls
     - name: Output
       run: echo "Deploy"
+    - name: Set ourput
+      run: echo "step-result=success" >> $GITHUB_OUTPUT
